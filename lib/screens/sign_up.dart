@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SigninScreen extends StatefulWidget {
-  const SigninScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SigninScreen> createState() => _SigninScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SigninScreenState extends State<SigninScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,7 @@ class _SigninScreenState extends State<SigninScreen> {
               children: [
                 const Center(
                   child: Text(
-                    "SignIn",
+                    "SignUp",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -43,7 +43,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 ),
                 const Center(
                   child: Text(
-                    "Login to your account",
+                    "Create a new account",
                     style: TextStyle(
                         color: Color(0xFFbbb0ff),
                         fontWeight: FontWeight.w500,
@@ -60,7 +60,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       padding: EdgeInsets.only(top: 30),
                       margin: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 15.0),
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 1.71,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -69,6 +69,30 @@ class _SigninScreenState extends State<SigninScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          const Text(
+                            "Name",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          Container(
+                            padding: const EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 1),
+                            ),
+                            child: const TextField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  prefixIcon: Icon(
+                                    Icons.email,
+                                    color: Color(0xFF7f30fe),
+                                  )),
+                            ),
+                          ),
+                          SizedBox(height: 10),
                           const Text(
                             "Email",
                             style: TextStyle(
@@ -118,65 +142,83 @@ class _SigninScreenState extends State<SigninScreen> {
                                         color: Color(0xFF7f30fe),
                                       )),
                                 ),
+                              ),
+                              SizedBox(height: 10),
+                              const Text(
+                                "Confirm Password",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 8.0),
+                              Container(
+                                padding: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(width: 1),
+                                ),
+                                child: const TextField(
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      prefixIcon: Icon(
+                                        Icons.email,
+                                        color: Color(0xFF7f30fe),
+                                      )),
+                                ),
+                              ),
+                              SizedBox(height: 35),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Don't have an account? ",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Sign Up Now",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(
+                                          0xFF7f30fe,
+                                        ),
+                                        fontSize: 17),
+                                  )
+                                ],
                               )
                             ],
                           ),
-                          const SizedBox(height: 8.0),
-                          Container(
-                            alignment: Alignment.bottomRight,
-                            child: const Text(
-                              "Forget Password?",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                          ),
                           SizedBox(height: 50),
-                          Center(
-                            child: Material(
-                              elevation: 5,
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                width: 128,
-                                decoration: BoxDecoration(
-                                    color: const Color(0xFF6380fb),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: const Text(
-                                  "SignIn",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Don't have an account? ",
-                      style: TextStyle(
-                        fontSize: 15,
+                SizedBox(height: 20),
+                Center(
+                  child: Material(
+                    elevation: 5,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF6380fb),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Text(
+                        "SignUp",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ),
                     ),
-                    Text(
-                      "Sign Up Now",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(
-                            0xFF7f30fe,
-                          ),
-                          fontSize: 17),
-                    )
-                  ],
-                )
+                  ),
+                ),
+                SizedBox(height: 15),
               ],
             ),
           )

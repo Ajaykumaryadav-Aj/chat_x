@@ -57,7 +57,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30),
                       margin: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 15.0),
                       height: MediaQuery.of(context).size.height / 2,
@@ -130,7 +130,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                   fontSize: 18, fontWeight: FontWeight.w500),
                             ),
                           ),
-                          SizedBox(height: 50),
+                          const SizedBox(height: 50),
                           Center(
                             child: Material(
                               elevation: 5,
@@ -156,8 +156,8 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                Row(
+                const SizedBox(height: 15),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(

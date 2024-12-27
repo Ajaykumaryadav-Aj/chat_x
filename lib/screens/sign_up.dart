@@ -57,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     elevation: 5.0,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30),
                       margin: const EdgeInsets.symmetric(
                           vertical: 15.0, horizontal: 15.0),
                       height: MediaQuery.of(context).size.height / 1.71,
@@ -92,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   )),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           const Text(
                             "Email",
                             style: TextStyle(
@@ -143,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       )),
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               const Text(
                                 "Confirm Password",
                                 style: TextStyle(
@@ -167,8 +167,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       )),
                                 ),
                               ),
-                              SizedBox(height: 35),
-                              Row(
+                              const SizedBox(height: 35),
+                              const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
@@ -190,19 +190,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )
                             ],
                           ),
-                          SizedBox(height: 50),
+                          const SizedBox(height: 50),
                         ],
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Center(
                   child: Material(
                     elevation: 5,
                     child: Container(
                       padding: const EdgeInsets.all(10),
-                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                           color: const Color(0xFF6380fb),
@@ -218,7 +218,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
               ],
             ),
           )

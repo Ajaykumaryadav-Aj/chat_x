@@ -41,10 +41,83 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 2),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 1.134,
               decoration: BoxDecoration(
-                  color: Colors.black, borderRadius: BorderRadius.circular(20)),
+                  color: const Color.fromARGB(89, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(20)),
+              child: Column(
+                children: [
+                  ListTile(
+                    titleAlignment: ListTileTitleAlignment.top,
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image.asset(
+                        "assets/profile.jpeg",
+                        height: 60,
+                        width: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(
+                      "Ajay Kumar",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                    subtitle: Text(
+                      "Hello, what are you doing?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black45,
+                          fontSize: 16),
+                    ),
+                    trailing: Text(
+                      "4:30 pm",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black45,
+                          fontSize: 16),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    titleAlignment: ListTileTitleAlignment.top,
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image.asset(
+                        "assets/aj2.jpg",
+                        height: 60,
+                        width: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(
+                      "AK Yadav",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                    subtitle: Text(
+                      "Hello, what are you doing?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black45,
+                          fontSize: 16),
+                    ),
+                    trailing: Text(
+                      "4:00 pm",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black45,
+                          fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
             )
           ],
         ),

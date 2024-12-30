@@ -11,19 +11,40 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF553370),
+        backgroundColor: const Color(0xFF553370),
         body: Container(
-          margin: EdgeInsets.only(top: 60, left: 20, right: 20),
+          margin: const EdgeInsets.only(top: 50),
           child: Stack(
             children: [
-              Row(
+              Column(
                 children: [
-                  Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Color(0),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Color(0xffc199cd),
+                      ),
+                      SizedBox(width: 100),
+                      Text(
+                        "Ajay Kumar",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Color(0xffc199cd),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 1.13,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xffc199cd)),
                   )
                 ],
-              )
+              ),
             ],
           ),
         ));

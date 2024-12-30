@@ -1,3 +1,4 @@
+import 'package:chat_x/screens/chat_page.dart';
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/screens/sign_up.dart';
 import 'package:chat_x/screens/signin.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const ChatPage(),
     );
   }
 }

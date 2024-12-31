@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -8,6 +9,43 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String email = "", password = "", name = "", confirmPassword = "";
+  final _formkey = GlobalKey<FormState>();
+
+  TextEditingController mailcontroller = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
+
+  registration() async {
+    if (password != null && password == confirmPassword) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Registered Successfully",
+          style: TextStyle(fontSize: 20),
+        )));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            "Password provided is too weak",
+            style: TextStyle(fontSize: 18),
+          )));
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text(
+                "Account Already exists",
+                style: TextStyle(fontSize: 18.0),
+              )));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,132 +104,163 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Name",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Container(
-                            padding: const EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1),
-                            ),
-                            child: const TextField(
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Color(0xFF7f30fe),
-                                  )),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          const Text(
-                            "Email",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const SizedBox(height: 8.0),
-                          Container(
-                            padding: const EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 1),
-                            ),
-                            child: const TextField(
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  prefixIcon: Icon(
-                                    Icons.email,
-                                    color: Color(0xFF7f30fe),
-                                  )),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Password",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Name",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(height: 8.0),
-                              Container(
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 1),
-                                ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.password,
-                                        color: Color(0xFF7f30fe),
-                                      )),
-                                ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(width: 1),
                               ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                "Confirm Password",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              child: TextFormField(
+                                controller: nameController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your name";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Color(0xFF7f30fe),
+                                    )),
                               ),
-                              const SizedBox(height: 8.0),
-                              Container(
-                                padding: const EdgeInsets.only(left: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 1),
-                                ),
-                                child: const TextField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      prefixIcon: Icon(
-                                        Icons.email,
-                                        color: Color(0xFF7f30fe),
-                                      )),
-                                ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              "Email",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(height: 35),
-                              const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Don't have an account? ",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                    ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Container(
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(width: 1),
+                              ),
+                              child: TextFormField(
+                                controller: mailcontroller,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return "Please enter your Email";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    prefixIcon: Icon(
+                                      Icons.email,
+                                      color: Color(0xFF7f30fe),
+                                    )),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Password",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  Text(
-                                    "Sign Up Now",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(
-                                          0xFF7f30fe,
-                                        ),
-                                        fontSize: 17),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 50),
-                        ],
+                                ),
+                                const SizedBox(height: 8.0),
+                                Container(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(width: 1),
+                                  ),
+                                  child: TextFormField(
+                                    controller: passwordController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your Passwor";
+                                      }
+                                      return null;
+                                    },
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(
+                                          Icons.password,
+                                          color: Color(0xFF7f30fe),
+                                        )),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                const Text(
+                                  "Confirm Password",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Container(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(width: 1),
+                                  ),
+                                  child: TextFormField(
+                                    controller: confirmController,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Please enter your confirm password";
+                                      }
+                                      return null;
+                                    },
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        prefixIcon: Icon(
+                                          Icons.email,
+                                          color: Color(0xFF7f30fe),
+                                        )),
+                                  ),
+                                ),
+                                const SizedBox(height: 35),
+                                const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Don't have an account? ",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    Text(
+                                      "Sign Up Now",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(
+                                            0xFF7f30fe,
+                                          ),
+                                          fontSize: 17),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 50),
+                          ],
+                        ),
                       ),
                     ),
                   ),

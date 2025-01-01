@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,6 +23,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+String Id = randomAlphaNumeric(10);
+
+        Map<String, dynamic> userInfoMap = {"Name":nameController.text,
+        "Email":mailcontroller.text,
+        "username":mailcontroller.text.replaceAll("@gmail.com", "" ),
+        "Photo":"https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH",
+        "Id":Id,
+        };
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Registered Successfully",
@@ -134,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     prefixIcon: Icon(
-                                      Icons.email,
+                                      Icons.person,
                                       color: Color(0xFF7f30fe),
                                     )),
                               ),
@@ -230,7 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         prefixIcon: Icon(
-                                          Icons.email,
+                                          Icons.password_rounded,
                                           color: Color(0xFF7f30fe),
                                         )),
                                   ),
@@ -266,23 +276,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Center(
-                  child: Material(
-                    elevation: 5,
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          color: const Color(0xFF6380fb),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: const Text(
-                        "SignUp",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                GestureDetector(
+                  onTap: () {
+                    if (_formkey.currentState!.validate()) {
+                      setState(() {
+                        email = mailcontroller.text;
+                        name = nameController.text;
+                        password = passwordController.text;
+                        confirmPassword = confirmController.text;
+                      });
+                    }
+                    registration();
+                  },
+                  child: Center(
+                    child: Material(
+                      elevation: 5,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF6380fb),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Text(
+                          "SignUp",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
                       ),
                     ),
                   ),

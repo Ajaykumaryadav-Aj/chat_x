@@ -1,3 +1,6 @@
+import 'package:chat_x/screens/home.dart';
+import 'package:chat_x/service/database.dart';
+import 'package:chat_x/service/shared_pref.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
@@ -23,20 +26,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
-String Id = randomAlphaNumeric(10);
+        String Id = randomAlphaNumeric(10);
 
-        Map<String, dynamic> userInfoMap = {"Name":nameController.text,
-        "Email":mailcontroller.text,
-        "username":mailcontroller.text.replaceAll("@gmail.com", "" ),
-        "Photo":"https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH",
-        "Id":Id,
+        Map<String, dynamic> userInfoMap = {
+          "Name": nameController.text,
+          "Email": mailcontroller.text,
+          "username": mailcontroller.text.replaceAll("@gmail.com", ""),
+          "Photo":
+              "https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH",
+          "Id": Id,
         };
+
+        await DatabaseMethods().addUserDetails(userInfoMap, Id);
+        await SharedPrefHelper().saveUserId(Id);
+        await SharedPrefHelper().saveUserDisplayName(nameController.text);
+        await SharedPrefHelper().saveUserEmail(mailcontroller.text);
+        await SharedPrefHelper().saveUserPic(
+            "https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH");
+        await SharedPrefHelper()
+            .saveUserName(mailcontroller.text.replaceAll("@gmail.com", ""));
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
           "Registered Successfully",
           style: TextStyle(fontSize: 20),
         )));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -287,6 +306,7 @@ String Id = randomAlphaNumeric(10);
                       });
                     }
                     registration();
+                   
                   },
                   child: Center(
                     child: Material(

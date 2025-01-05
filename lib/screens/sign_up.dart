@@ -191,7 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   }
                                   return null;
                                 },
-                                decoration: InputDecoration(
+                                decoration:const InputDecoration(
                                     border: InputBorder.none,
                                     prefixIcon: Icon(
                                       Icons.email,
@@ -265,7 +265,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 35),
-                                const Row(
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -274,14 +274,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         fontSize: 15,
                                       ),
                                     ),
-                                    Text(
-                                      "Sign Up Now",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(
-                                            0xFF7f30fe,
-                                          ),
-                                          fontSize: 17),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(),
+                                            ));
+                                      },
+                                      child: Text(
+                                        "Sign Up Now",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(
+                                              0xFF7f30fe,
+                                            ),
+                                            fontSize: 17),
+                                      ),
                                     )
                                   ],
                                 )
@@ -306,7 +316,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     }
                     registration();
-                   
                   },
                   child: Center(
                     child: Material(

@@ -1,4 +1,6 @@
+import 'package:chat_x/screens/forgot_password.dart';
 import 'package:chat_x/screens/home.dart';
+import 'package:chat_x/screens/sign_up.dart';
 import 'package:chat_x/service/database.dart';
 import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,14 +30,14 @@ class _SigninScreenState extends State<SigninScreen> {
           await DatabaseMethods().getUserbyemail(email);
 
       name = "${querySnapshot.docs[0]['Name']}";
-      username = "${querySnapshot.docs[0]['username']}"; 
+      username = "${querySnapshot.docs[0]['username']}";
       pic = "${querySnapshot.docs[0]['Photo']}";
       id = querySnapshot.docs[0].id;
-        await SharedPrefHelper().saveUserDisplayName(name);
-        await SharedPrefHelper().saveUserName (username);
-          await SharedPrefHelper().saveUserId(id);
+      await SharedPrefHelper().saveUserDisplayName(name);
+      await SharedPrefHelper().saveUserName(username);
+      await SharedPrefHelper().saveUserId(id);
 
-        await SharedPrefHelper().saveUserPic(pic);
+      await SharedPrefHelper().saveUserPic(pic);
 
       Navigator.pushReplacement(
           context,
@@ -54,7 +56,7 @@ class _SigninScreenState extends State<SigninScreen> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.orangeAccent,
             content: Text(
-              "Wrong Password provide by User",
+              "Wrong Password Provide by User",
               style: TextStyle(fontSize: 18, color: Colors.black),
             )));
       }
@@ -191,12 +193,22 @@ class _SigninScreenState extends State<SigninScreen> {
                               ],
                             ),
                             const SizedBox(height: 8.0),
-                            Container(
-                              alignment: Alignment.bottomRight,
-                              child: const Text(
-                                "Forget Password?",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w500),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ForgotPassword(),
+                                    ));
+                              },
+                              child: Container(
+                                alignment: Alignment.bottomRight,
+                                child: const Text(
+                                  "Forget Password?",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 50),
@@ -239,7 +251,7 @@ class _SigninScreenState extends State<SigninScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -248,14 +260,23 @@ class _SigninScreenState extends State<SigninScreen> {
                         fontSize: 15,
                       ),
                     ),
-                    Text(
-                      "Sign Up Now",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(
-                            0xFF7f30fe,
-                          ),
-                          fontSize: 17),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpScreen(),
+                            ));
+                      },
+                      child: Text(
+                        "Sign Up Now",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color(
+                              0xFF7f30fe,
+                            ),
+                            fontSize: 17),
+                      ),
                     )
                   ],
                 )

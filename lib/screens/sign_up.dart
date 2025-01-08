@@ -27,11 +27,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         String Id = randomAlphaNumeric(10);
-
+        String user = mailcontroller.text.replaceAll("@gmail.com", "");
+        String updateusername =
+            user.replaceFirst(user[0], user[0].toUpperCase());
+        String firstletter = user.substring(0, 1).toUpperCase();
         Map<String, dynamic> userInfoMap = {
           "Name": nameController.text,
           "Email": mailcontroller.text,
-          "username": mailcontroller.text.replaceAll("@gmail.com", ""),
+          "username": updateusername,
+          "SearchKey":firstletter,
           "Photo":
               "https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH",
           "Id": Id,
@@ -191,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   }
                                   return null;
                                 },
-                                decoration:const InputDecoration(
+                                decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     prefixIcon: Icon(
                                       Icons.email,

@@ -1,3 +1,5 @@
+import 'package:chat_x/service/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,9 +25,22 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     var captilizeValue =
         value.substring(0, 1).toUpperCase() + value.substring(1);
-        if (queryResultSet.isEmpty && value.length ==1) {
-          
+    if (queryResultSet.isEmpty && value.length == 1) {
+      DatabaseMethods().Search(value).then((QuerySnapshot docs) {
+        for (int i = 0; i < docs.docs.length; ++i) {
+          queryResultSet.add(docs.docs[i].data());
         }
+      });
+    } else {
+      tempSearchStore = [];
+      queryResultSet.forEach((element) {
+        if (element["username"].startsWith(captilizeValue)) {
+          setState(() {
+            tempSearchStore.add(element);
+          });
+        }
+      });
+    }
   }
 
   bool search = false;
@@ -46,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     search
                         ? Expanded(
                             child: TextField(
+                            onChanged: (value) {
+                              initiateSearch(value.toUpperCase());
+                            },
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search User",

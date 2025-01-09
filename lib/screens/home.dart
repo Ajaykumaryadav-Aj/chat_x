@@ -53,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Padding(
-                padding:
-                    EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+                padding: const EdgeInsets.only(
+                    top: 50, left: 20, right: 20, bottom: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -64,12 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             onChanged: (value) {
                               initiateSearch(value.toUpperCase());
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search User",
                                 hintStyle: TextStyle(
                                     fontSize: 20, color: Colors.black)),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18),
@@ -100,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
                 width: MediaQuery.of(context).size.width,
                 height: search
                     ? MediaQuery.of(context).size.height / 1.134
@@ -108,77 +109,121 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                     color: const Color.fromARGB(89, 255, 255, 255),
                     borderRadius: BorderRadius.circular(20)),
-                child: Column(
-                  children: [
-                    ListTile(
-                      titleAlignment: ListTileTitleAlignment.top,
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset(
-                          "assets/profile.jpeg",
-                          height: 60,
-                          width: 60,
-                          fit: BoxFit.cover,
+                child: search
+                    ? ListView(
+                        padding: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10,
                         ),
+                        primary: false,
+                        shrinkWrap: true,
+                        children: tempSearchStore.map((element) {
+                          return buildResultCard(element);
+                        }).toList(),
+                      )
+                    : Column(
+                        children: [
+                          ListTile(
+                            titleAlignment: ListTileTitleAlignment.top,
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.asset(
+                                "assets/profile.jpeg",
+                                height: 60,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            title: const Text(
+                              "Ajay Kumar",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontSize: 20),
+                            ),
+                            subtitle: const Text(
+                              "Hello, what are you doing?",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black45,
+                                  fontSize: 16),
+                            ),
+                            trailing: const Text(
+                              "4:30 pm",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black45,
+                                  fontSize: 16),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ListTile(
+                            titleAlignment: ListTileTitleAlignment.top,
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.asset(
+                                "assets/aj2.jpg",
+                                height: 60,
+                                width: 60,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            title: const Text(
+                              "AK Yadav",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black,
+                                  fontSize: 20),
+                            ),
+                            subtitle: const Text(
+                              "Hello, what are you doing?",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black45,
+                                  fontSize: 16),
+                            ),
+                            trailing: const Text(
+                              "4:00 pm",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black45,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
-                      title: Text(
-                        "Ajay Kumar",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 20),
-                      ),
-                      subtitle: Text(
-                        "Hello, what are you doing?",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                            fontSize: 16),
-                      ),
-                      trailing: Text(
-                        "4:30 pm",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                            fontSize: 16),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    ListTile(
-                      titleAlignment: ListTileTitleAlignment.top,
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: Image.asset(
-                          "assets/aj2.jpg",
-                          height: 60,
-                          width: 60,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      title: Text(
-                        "AK Yadav",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 20),
-                      ),
-                      subtitle: Text(
-                        "Hello, what are you doing?",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                            fontSize: 16),
-                      ),
-                      trailing: Text(
-                        "4:00 pm",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black45,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ],
-                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildResultCard(data) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: Colors.green, borderRadius: BorderRadius.circular(10)),
+          child: Row(
+            children: [
+              Text(
+                data['Name'],
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 50.0),
+              Text(
+                data["username"],
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0),
               )
             ],
           ),

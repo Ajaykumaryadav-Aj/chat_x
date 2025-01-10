@@ -287,7 +287,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                   HomeScreen(),
                                             ));
                                       },
-                                      child: Text(
+                                      child:const Text(
                                         "Sign Up Now",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,

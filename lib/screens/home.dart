@@ -10,6 +10,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool search = false;
+
+  getChatRoomIdbyUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
+  }
+
   var queryResultSet = [];
   var tempSearchStore = [];
 
@@ -43,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  bool search = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,10 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           decoration: BoxDecoration(
                               color: const Color(0xFF3a2144),
                               borderRadius: BorderRadius.circular(20)),
-                          child: const Icon(
-                            Icons.search,
-                            color: Color(0xffc199cd),
-                          )),
+                          child: search
+                              ? GestureDetector(
+                                  onTap: () {
+                                    search = false;
+                                    setState(() {});
+                                  },
+                                  child: Icon(
+                                    Icons.cancel,
+                                    color: Color(0xffc199cd),
+                                  ),
+                                )
+                              : Icon(Icons.search)),
                     )
                   ],
                 ),
@@ -210,22 +227,31 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.all(18),
           decoration: BoxDecoration(
               color: Colors.green, borderRadius: BorderRadius.circular(10)),
-          child: Row(
-            children: [
-              Text(
-                data['Name'],
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          child: ListTile(
+            titleAlignment: ListTileTitleAlignment.top,
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Image.asset(
+                data["Photo"],
+                height: 60,
+                width: 60,
+                fit: BoxFit.cover,
               ),
-              SizedBox(height: 50.0),
-              Text(
-                data["username"],
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0),
-              )
-            ],
+            ),
+            title: Text(
+              data["Name"],
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  fontSize: 20),
+            ),
+            subtitle: Text(
+              data["username"],
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black45,
+                  fontSize: 16),
+            ),
           ),
         ),
       ),

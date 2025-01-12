@@ -11,6 +11,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool search = false;
+  String? myName, myProfilePic, myUserName, myEmail;
+
+  getthesharedpref(){
+    
+  }
 
   getChatRoomIdbyUsername(String a, String b) {
     if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
@@ -218,39 +223,46 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildResultCard(data) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: EdgeInsets.all(18),
-          decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(10)),
-          child: ListTile(
-            titleAlignment: ListTileTitleAlignment.top,
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(40),
-              child: Image.asset(
-                data["Photo"],
-                height: 60,
-                width: 60,
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        search = false;
+        setState(() {});
+        var chatRoomId = getChatRoomIdbyUsername(a, b);
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Material(
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+                color: Colors.green, borderRadius: BorderRadius.circular(10)),
+            child: ListTile(
+              titleAlignment: ListTileTitleAlignment.top,
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Image.asset(
+                  data["Photo"],
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
-            title: Text(
-              data["Name"],
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                  fontSize: 20),
-            ),
-            subtitle: Text(
-              data["username"],
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black45,
-                  fontSize: 16),
+              title: Text(
+                data["Name"],
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontSize: 20),
+              ),
+              subtitle: Text(
+                data["username"],
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black45,
+                    fontSize: 16),
+              ),
             ),
           ),
         ),

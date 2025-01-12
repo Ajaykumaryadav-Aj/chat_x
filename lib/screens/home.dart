@@ -1,4 +1,5 @@
 import 'package:chat_x/service/database.dart';
+import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,23 @@ class _HomeScreenState extends State<HomeScreen> {
   bool search = false;
   String? myName, myProfilePic, myUserName, myEmail;
 
-  getthesharedpref(){
-    
+  getthesharedpref() async {
+    myName = await SharedPrefHelper().getUserDisplayName();
+    myProfilePic = await SharedPrefHelper().getUserPic();
+    myUserName = await SharedPrefHelper().getUserName();
+    myEmail = await SharedPrefHelper().getUserEmail();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ontheload();
   }
 
   getChatRoomIdbyUsername(String a, String b) {
@@ -227,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         search = false;
         setState(() {});
-        var chatRoomId = getChatRoomIdbyUsername(a, b);
+        var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),

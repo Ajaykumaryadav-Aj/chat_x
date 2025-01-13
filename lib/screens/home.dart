@@ -1,3 +1,4 @@
+import 'package:chat_x/screens/chat_page.dart';
 import 'package:chat_x/service/database.dart';
 import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -240,10 +241,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildResultCard(data) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         search = false;
         setState(() {});
         var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
+        Map<String, dynamic> chatRoomInfoMap = {
+          "users": [myUserName, data["username"]]
+        };
+        await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                  name: data["Name"],
+                  profileurl: data["Photo"],
+                  username: data["username"]),
+            ));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -254,9 +267,9 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
                 color: Colors.green, borderRadius: BorderRadius.circular(10)),
-            child: ListTile(
-              titleAlignment: ListTileTitleAlignment.top,
-              leading: ClipRRect(
+            child: Row(children: [
+              // titleAlignment: ListTileTitleAlignment.top,
+              ClipRRect(
                 borderRadius: BorderRadius.circular(40),
                 child: Image.asset(
                   data["Photo"],
@@ -265,21 +278,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              title: Text(
-                data["Name"],
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 20),
-              ),
-              subtitle: Text(
-                data["username"],
-                style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black45,
-                    fontSize: 16),
-              ),
-            ),
+              Column(
+                children: [
+                  Text(
+                    data["Name"],
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontSize: 20),
+                  ),
+                  Text(
+                    data["username"],
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black45,
+                        fontSize: 16),
+                  ),
+                ],
+              )
+            ]),
           ),
         ),
       ),

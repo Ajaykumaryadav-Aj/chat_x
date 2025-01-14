@@ -27,9 +27,9 @@ class SharedPrefHelper {
     return prefs.setString(userPickey, getUserPic);
   }
 
-  Future<bool> saveUserDisplayName(String getUserUserDisplayName) async {
+  Future<bool> saveUserDisplayName(String getUserDisplayName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.setString(displaynameKey, getUserUserDisplayName);
+    return prefs.setString(displaynameKey, getUserDisplayName);
   }
 
   Future<String?> getUserId() async {

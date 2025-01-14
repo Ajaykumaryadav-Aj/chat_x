@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ChatPage extends StatefulWidget {
   String name, profileurl, username;
   ChatPage(
-      {super.key,
+      {super.key, 
       required this.name,
       required this.profileurl,
       required this.username});

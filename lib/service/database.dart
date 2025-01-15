@@ -22,19 +22,47 @@ class DatabaseMethods {
         .get();
   }
 
-  createChatRoom(
-      String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
+  // createChatRoom(
+  //     String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
+  //   final snapshot = await FirebaseFirestore.instance
+  //       .collection("chatrooms")
+  //       .doc(chatRoomId)
+  //       .get();
+  //   if (snapshot.exists) {
+  //     return true;
+  //   } else {
+  //     return FirebaseFirestore.instance
+  //         .collection("chatrooms")
+  //         .doc(chatRoomId)
+  //         .set(chatRoomInfoMap);
+  //   }
+  // }
+
+ Future<bool> createChatRoom(
+    String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
+  try {
+    print("Checking chat room with ID: $chatRoomId");
     final snapshot = await FirebaseFirestore.instance
         .collection("chatrooms")
         .doc(chatRoomId)
         .get();
+
     if (snapshot.exists) {
+      print("Chat room already exists");
       return true;
     } else {
-      return FirebaseFirestore.instance
+      print("Creating new chat room with data: $chatRoomInfoMap");
+      await FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(chatRoomId)
           .set(chatRoomInfoMap);
+      print("Chat room created successfully");
+      return true;
     }
+  } catch (e) {
+    print("Error creating chat room: $e");
+    return false;
   }
+}
+
 }

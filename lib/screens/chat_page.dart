@@ -1,9 +1,14 @@
+import 'package:chat_x/service/database.dart';
+import 'package:chat_x/service/shared_pref.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
   String name, profileurl, username;
   ChatPage(
-      {super.key, 
+      {super.key,
       required this.name,
       required this.profileurl,
       required this.username});
@@ -13,6 +18,51 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  TextEditingController messageController = TextEditingController();
+  String? myUserName, myProfilePic, myName, myEmail, messageId;
+
+  getthesharedpref() async {
+    myUserName = await SharedPrefHelper().getUserName();
+    myProfilePic = await SharedPrefHelper().getUserPic();
+    myName = await SharedPrefHelper().getUserDisplayName();
+    myEmail = await SharedPrefHelper().getUserEmail();
+    setState(() {});
+  }
+
+  ontheload() async {
+    await getthesharedpref();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ontheload();
+  }
+
+  addMessage(bool sendClicked) {
+    if (messageController.text != "") {
+      String message = messageController.text;
+      messageController.text = "";
+
+      DateTime now = DateTime.now();
+      String formattedDate = DateFormat("h:mma").format(now);
+
+      Map<String, dynamic> messageInfoMap = {
+        "message": message,
+        "sendBy": myUserName,
+        "ts": formattedDate,
+        "time": FieldValue.serverTimestamp(),
+        "imgUrl": myProfilePic,
+      };
+      if (messageId == "") {
+        messageId = randomAlphaNumeric(10);
+      }
+
+      // DatabaseMethods().addMessage(chatRoomId, messageId, messageInfoMap)
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +150,7 @@ class _ChatPageState extends State<ChatPage> {
                           children: [
                             Expanded(
                               child: TextField(
+                                controller: messageController,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Type a message"),

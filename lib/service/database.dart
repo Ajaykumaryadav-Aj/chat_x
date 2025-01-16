@@ -38,31 +38,40 @@ class DatabaseMethods {
   //   }
   // }
 
- Future<bool> createChatRoom(
-    String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
-  try {
-    print("Checking chat room with ID: $chatRoomId");
-    final snapshot = await FirebaseFirestore.instance
-        .collection("chatrooms")
-        .doc(chatRoomId)
-        .get();
-
-    if (snapshot.exists) {
-      print("Chat room already exists");
-      return true;
-    } else {
-      print("Creating new chat room with data: $chatRoomInfoMap");
-      await FirebaseFirestore.instance
+  Future<bool> createChatRoom(
+      String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
+    try {
+      print("Checking chat room with ID: $chatRoomId");
+      final snapshot = await FirebaseFirestore.instance
           .collection("chatrooms")
           .doc(chatRoomId)
-          .set(chatRoomInfoMap);
-      print("Chat room created successfully");
-      return true;
-    }
-  } catch (e) {
-    print("Error creating chat room: $e");
-    return false;
-  }
-}
+          .get();
 
+      if (snapshot.exists) {
+        print("Chat room already exists");
+        return true;
+      } else {
+        print("Creating new chat room with data: $chatRoomInfoMap");
+        await FirebaseFirestore.instance
+            .collection("chatrooms")
+            .doc(chatRoomId)
+            .set(chatRoomInfoMap);
+        print("Chat room created successfully");
+        return true;
+      }
+    } catch (e) {
+      print("Error creating chat room: $e");
+      return false;
+    }
+  }
+
+  Future addMessage(String chatRoomId, String messageId,
+      Map<String, dynamic> messageInfoMap) async {
+    return FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(chatRoomId)
+        .collection("chats")
+        .doc(messageId)
+        .set(messageInfoMap);
+  }
 }

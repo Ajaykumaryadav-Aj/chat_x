@@ -19,13 +19,15 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = TextEditingController();
-  String? myUserName, myProfilePic, myName, myEmail, messageId;
+  String? myUserName, myProfilePic, myName, myEmail, messageId, chatRoomId;
 
   getthesharedpref() async {
     myUserName = await SharedPrefHelper().getUserName();
     myProfilePic = await SharedPrefHelper().getUserPic();
     myName = await SharedPrefHelper().getUserDisplayName();
     myEmail = await SharedPrefHelper().getUserEmail();
+
+    chatRoomId = getChatRoomIdbyUsername(widget.username, myUserName!);
     setState(() {});
   }
 
@@ -38,6 +40,14 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     ontheload();
+  }
+
+  getChatRoomIdbyUsername(String a, String b) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+      return "$b\_$a";
+    } else {
+      return "$a\_$b";
+    }
   }
 
   addMessage(bool sendClicked) {
@@ -55,11 +65,23 @@ class _ChatPageState extends State<ChatPage> {
         "time": FieldValue.serverTimestamp(),
         "imgUrl": myProfilePic,
       };
-      if (messageId == "") {
-        messageId = randomAlphaNumeric(10);
-      }
+      messageId ??= randomAlphaNumeric(10);
 
-      // DatabaseMethods().addMessage(chatRoomId, messageId, messageInfoMap)
+      DatabaseMethods()
+          .addMessage(chatRoomId!, messageId!, messageInfoMap)
+          .then((value) {
+        Map<String, dynamic> lastMessageInfoMap = {
+          "lastMessage": message,
+          "lastMessageSendTs": formattedDate,
+          "time": FieldValue.serverTimestamp(),
+          "lastMessageSendBy": myUserName,
+        };
+        DatabaseMethods()
+            .updateLastMessageSend(chatRoomId!, lastMessageInfoMap);
+        if (sendClicked) {
+          messageId = "";
+        }
+      });
     }
   }
 
@@ -90,8 +112,8 @@ class _ChatPageState extends State<ChatPage> {
               ),
               const SizedBox(height: 20),
               Container(
-                padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+                padding: const EdgeInsets.only(
+                    left: 20, right: 20, top: 20, bottom: 20),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 1.13,
                 decoration: BoxDecoration(
@@ -156,12 +178,17 @@ class _ChatPageState extends State<ChatPage> {
                                     hintText: "Type a message"),
                               ),
                             ),
-                            Container(
-                                padding: EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFf3f3f3),
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Icon(Icons.send))
+                            GestureDetector(
+                              onTap: () {
+                                addMessage(true);
+                              },
+                              child: Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      color: Color(0xFFf3f3f3),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Icon(Icons.send)),
+                            )
                           ],
                         ),
                       ),

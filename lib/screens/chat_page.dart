@@ -20,6 +20,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = TextEditingController();
   String? myUserName, myProfilePic, myName, myEmail, messageId, chatRoomId;
+  Stream? messageStream;
 
   getthesharedpref() async {
     myUserName = await SharedPrefHelper().getUserName();
@@ -48,6 +49,64 @@ class _ChatPageState extends State<ChatPage> {
     } else {
       return "$a\_$b";
     }
+  }
+
+  Widget chatMessageTile(String message, bool sendByMe) {
+    return Row(
+      mainAxisAlignment:
+          sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(0),
+                  bottomRight: sendByMe
+                      ? Radius.circular(0)
+                      : Radius.circular(
+                          24,
+                        ),
+                  topRight: Radius.circular(24),
+                  bottomLeft:
+                      sendByMe ? Radius.circular(24) : Radius.circular(0),
+                ),
+                color: sendByMe
+                    ? Color.fromARGB(255, 194, 197, 204)
+                    : Color.fromARGB(255, 183, 194, 228),
+              ),
+              child: Text(
+                message,
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+              )),
+        )
+      ],
+    );
+  }
+
+  Widget chatMessage() {
+    return StreamBuilder(
+      stream: messageStream,
+      builder: (context, AsyncSnapshot snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+                padding: EdgeInsets.only(bottom: 90.0, top: 130),
+                itemCount: snapshot.data.docs.length,
+                reverse: true,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot ds = snapshot.data.docs[index];
+                  return chatMessageTile(
+                      ds["message"], myUserName == ds["sendBy"]);
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+    );
   }
 
   addMessage(bool sendClicked) {
@@ -79,7 +138,7 @@ class _ChatPageState extends State<ChatPage> {
         DatabaseMethods()
             .updateLastMessageSend(chatRoomId!, lastMessageInfoMap);
         if (sendClicked) {
-          messageId = "";
+          messageId = null;
         }
       });
     }

@@ -1,3 +1,4 @@
+import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/service/database.dart';
 import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,6 +35,7 @@ class _ChatPageState extends State<ChatPage> {
 
   ontheload() async {
     await getthesharedpref();
+    await getAndSetMessage();
     setState(() {});
   }
 
@@ -58,26 +60,27 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Flexible(
           child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0),
+                  topLeft: const Radius.circular(0),
                   bottomRight: sendByMe
-                      ? Radius.circular(0)
-                      : Radius.circular(
+                      ? const Radius.circular(0)
+                      : const Radius.circular(
                           24,
                         ),
-                  topRight: Radius.circular(24),
-                  bottomLeft:
-                      sendByMe ? Radius.circular(24) : Radius.circular(0),
+                  topRight: const Radius.circular(24),
+                  bottomLeft: sendByMe
+                      ? const Radius.circular(24)
+                      : const Radius.circular(0),
                 ),
                 color: sendByMe
-                    ? Color.fromARGB(255, 194, 197, 204)
-                    : Color.fromARGB(255, 183, 194, 228),
+                    ? const Color.fromARGB(255, 194, 197, 204)
+                    : const Color.fromARGB(255, 183, 194, 228),
               ),
               child: Text(
                 message,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w500,
                     color: Colors.black),
@@ -93,7 +96,7 @@ class _ChatPageState extends State<ChatPage> {
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                padding: EdgeInsets.only(bottom: 90.0, top: 130),
+                padding: const EdgeInsets.only(bottom: 90.0, top: 130),
                 itemCount: snapshot.data.docs.length,
                 reverse: true,
                 itemBuilder: (context, index) {
@@ -102,7 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                       ds["message"], myUserName == ds["sendBy"]);
                 },
               )
-            : Center(
+            : const Center(
                 child: CircularProgressIndicator(),
               );
       },
@@ -144,24 +147,49 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  getAndSetMessage() async {
+    messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF553370),
         body: Container(
-          margin: const EdgeInsets.only(top: 50),
-          child: Column(
-            children: [
-              const Row(
+          padding: const EdgeInsets.only(top: 50),
+          child: Stack(children: [
+            Container(
+                margin: const EdgeInsets.only(top: 50),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 1.12,
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        bottomLeft: Radius.circular(30))),
+                child: chatMessage()),
+            Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Row(
                 children: [
-                  Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Color(0xffc199cd),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ));
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      color: Color(0xffc199cd),
+                    ),
                   ),
-                  SizedBox(width: 100),
+                  const SizedBox(width: 100),
                   Text(
-                    "Ajay Kumar",
-                    style: TextStyle(
+                    widget.name,
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                       color: Color(0xffc199cd),
@@ -169,94 +197,31 @@ class _ChatPageState extends State<ChatPage> {
                   )
                 ],
               ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 20, bottom: 20),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.13,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width / 2),
-                      alignment: Alignment.bottomRight,
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 194, 197, 204),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        "How are you?????????????????",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(
-                          right: MediaQuery.of(context).size.width / 2),
-                      alignment: Alignment.bottomLeft,
-                      decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 183, 194, 228),
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        "I am Fine bro.",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    Spacer(),
-                    Material(
-                      elevation: 5,
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 10.0),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                controller: messageController,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Type a message"),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                addMessage(true);
-                              },
-                              child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFFf3f3f3),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Icon(Icons.send)),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: Material(
+                elevation: 5,
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  margin:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  padding: const EdgeInsets.only(left: 10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextField(
+                    controller: messageController,
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Type a message",
+                        suffixIcon: Icon(Icons.send_rounded)),
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+          ]),
         ));
   }
 }

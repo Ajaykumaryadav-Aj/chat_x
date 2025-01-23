@@ -60,15 +60,14 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Flexible(
           child: Container(
+            padding: EdgeInsets.all(16),
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(0),
                   bottomRight: sendByMe
                       ? const Radius.circular(0)
-                      : const Radius.circular(
-                          24,
-                        ),
+                      : const Radius.circular(24),
                   topRight: const Radius.circular(24),
                   bottomLeft: sendByMe
                       ? const Radius.circular(24)
@@ -162,11 +161,12 @@ class _ChatPageState extends State<ChatPage> {
             Container(
                 margin: const EdgeInsets.only(top: 50),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 1.12,
+                height: MediaQuery.of(context).size.height /1.12,
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
+                      topRight: Radius.circular(10),
+                        topLeft: Radius.circular(0),
                         bottomLeft: Radius.circular(30))),
                 child: chatMessage()),
             Padding(
@@ -198,25 +198,28 @@ class _ChatPageState extends State<ChatPage> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               alignment: Alignment.bottomCenter,
               child: Material(
                 elevation: 5,
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  margin:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                   padding: const EdgeInsets.only(left: 10.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10)),
                   child: TextField(
                     controller: messageController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Type a message",
-                        suffixIcon: Icon(Icons.send_rounded)),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              addMessage(true);
+                            },
+                            icon: Icon(Icons.send))),
                   ),
                 ),
               ),

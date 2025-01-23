@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool search = false;
   String? myName, myProfilePic, myUserName, myEmail;
+  Stream? chatRoomsStream;
 
   getthesharedpref() async {
     myName = await SharedPrefHelper().getUserDisplayName();
@@ -28,6 +29,27 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
+  Widget ChatRoomList() {
+    return StreamBuilder(
+      stream: chatRoomsStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData
+            ? ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: snapshot.data.docs.length,
+              shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  
+                  DocumentSnapshot ds = snapshot.data.doc.length;
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -35,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getChatRoomIdbyUsername(String a, String b) {
-    if (a.substring(0, 1).codeUnitAt(0) >b.substring(0, 1).codeUnitAt(0)) {
+    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
       return "$b\_$a";
     } else {
       return "$a\_$b";
@@ -238,91 +260,85 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-Widget buildResultCard(data) {
-  return GestureDetector(
-    onTap: () async {
-      if (myUserName == null || data["username"] == null) {
-        print("Error: myUserName or username in data is null");
-        return;
-      }
 
-      search = false;
-      setState(() {});
-      var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
+  Widget buildResultCard(data) {
+    return GestureDetector(
+      onTap: () async {
+        if (myUserName == null || data["username"] == null) {
+          print("Error: myUserName or username in data is null");
+          return;
+        }
 
-      Map<String, dynamic> chatRoomInfoMap = {
-        "users": [myUserName, data["username"]],
-        "createdAt": FieldValue.serverTimestamp(),
-      };
+        search = false;
+        setState(() {});
+        var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
 
-      try {
-        await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatPage(
-              name: data["Name"],
-              profileurl: data["Photo"],
-              username: data["username"],
+        Map<String, dynamic> chatRoomInfoMap = {
+          "users": [myUserName, data["username"]],
+          "createdAt": FieldValue.serverTimestamp(),
+        };
+
+        try {
+          await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                name: data["Name"],
+                profileurl: data["Photo"],
+                username: data["username"],
+              ),
             ),
-          ),
-        );
-      } catch (e) {
-        print("Error creating chat room: $e");
-      }
-    },
-    child: Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(10)),
-          child: Row(children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  data["Name"] ?? "Unknown Name",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      fontSize: 20),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  data["username"] ?? "Unknown Username",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black45,
-                      fontSize: 16),
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.network(
-                    data["Photo"] ??
-                        "https://via.placeholder.com/60", 
-                    height: 60,
-                    width: 60,
-                    fit: BoxFit.cover,
+          );
+        } catch (e) {
+          print("Error creating chat room: $e");
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Material(
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+                color: Colors.green, borderRadius: BorderRadius.circular(10)),
+            child: Row(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    data["Name"] ?? "Unknown Name",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontSize: 20),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                  const SizedBox(height: 10),
+                  Text(
+                    data["username"] ?? "Unknown Username",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black45,
+                        fontSize: 16),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(40),
+                    child: Image.network(
+                      data["Photo"] ?? "https://via.placeholder.com/60",
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
         ),
       ),
-    ),
-  );
-}
-
-
-
-
-
-
+    );
+  }
 
   // Widget buildResultCard(data) {
   //   return GestureDetector(
@@ -335,7 +351,7 @@ Widget buildResultCard(data) {
   //       };
   //       await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
   //       setState(() {
-          
+
   //       });
   //       Navigator.push(
   //           context,

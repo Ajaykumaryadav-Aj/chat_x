@@ -35,11 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: snapshot.data.docs.length,
-              shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                itemCount: snapshot.data.docs.length,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  
                   DocumentSnapshot ds = snapshot.data.doc.length;
                 },
               )
@@ -339,6 +338,45 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+class ChatRoomListTile extends StatefulWidget {
+  const ChatRoomListTile({super.key});
+
+  @override
+  State<ChatRoomListTile> createState() => _ChatRoomListTileState();
+}
+
+class _ChatRoomListTileState extends State<ChatRoomListTile> {
+  String profilePicUrl = "", name = "" ,username="", id = "";
+
+  getthisUserInfo()async{
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Widget buildResultCard(data) {
   //   return GestureDetector(
@@ -408,4 +446,4 @@ class _HomeScreenState extends State<HomeScreen> {
   //     ),
   //   );
   // }
-}
+

@@ -359,6 +359,8 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   getthisUserInfo() async {
     username =
         widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
+    QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username.toLowerCase());
+    
   }
 
   @override

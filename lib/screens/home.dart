@@ -341,22 +341,29 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class ChatRoomListTile extends StatefulWidget {
-  const ChatRoomListTile({super.key});
+  final String lastMessage, chatRoomId, myUsername, time;
+  const ChatRoomListTile(
+      {super.key,
+      required this.lastMessage,
+      required this.chatRoomId,
+      required this.myUsername,
+      required this.time});
 
   @override
   State<ChatRoomListTile> createState() => _ChatRoomListTileState();
 }
 
 class _ChatRoomListTileState extends State<ChatRoomListTile> {
-  String profilePicUrl = "", name = "" ,username="", id = "";
+  String profilePicUrl = "", name = "", username = "", id = "";
 
-  getthisUserInfo()async{
-
+  getthisUserInfo() async {
+    username =
+        widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Container();
   }
 }
 

@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   ontheload() async {
     await getthesharedpref();
+    chatRoomsStream = await DatabaseMethods().getChatRooms();
     setState(() {});
   }
 
@@ -40,6 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.doc.length;
+                  return ChatRoomListTile(
+                      lastMessage: ds["lastMessage"],
+                      chatRoomId: ds.id,
+                      myUsername: myUserName!,
+                      time: ds["lastMessageSendTs"]);
                 },
               )
             : Center(
@@ -182,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         }).toList(),
                       )
                     : Column(
-                        children: [
+                        children:[
                           ListTile(
                             titleAlignment: ListTileTitleAlignment.top,
                             leading: ClipRRect(
@@ -359,100 +365,122 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   getthisUserInfo() async {
     username =
         widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
-    QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username.toLowerCase());
-    
+    QuerySnapshot querySnapshot =
+        await DatabaseMethods().getUserInfo(username.toLowerCase());
+    name = "${querySnapshot.docs[0]["NAme"]}";
+    profilePicUrl = "${querySnapshot.docs[0]["Photo"]}";
+    id = "${querySnapshot.docs[0]["Id"]}";
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getthisUserInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+      child: ListTile(
+        titleAlignment: ListTileTitleAlignment.top,
+        leading:
+            profilePicUrl == ""?CircularProgressIndicator()
+            :ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: Image.network(
+            profilePicUrl,
+            height: 60,
+            width: 60,
+            fit: BoxFit.cover,
+          ),
+        ),
+        title: Text(
+          username,
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: Colors.black, fontSize: 20),
+        ),
+        subtitle: Text(
+          widget.lastMessage,
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: Colors.black45, fontSize: 16),
+        ),
+        trailing: Text(
+          widget.time,
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: Colors.black45, fontSize: 16),
+        ),
+      ),
+    );
   }
 }
 
+// Widget buildResultCard(data) {
+//   return GestureDetector(
+//     onTap: () async {
+//       search = false;
+//       setState(() {});
+//       var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
+//       Map<String, dynamic> chatRoomInfoMap = {
+//         "users": [myUserName, data["username"]]
+//       };
+//       await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
+//       setState(() {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Widget buildResultCard(data) {
-  //   return GestureDetector(
-  //     onTap: () async {
-  //       search = false;
-  //       setState(() {});
-  //       var chatRoomId = getChatRoomIdbyUsername(myUserName!, data["username"]);
-  //       Map<String, dynamic> chatRoomInfoMap = {
-  //         "users": [myUserName, data["username"]]
-  //       };
-  //       await DatabaseMethods().createChatRoom(chatRoomId, chatRoomInfoMap);
-  //       setState(() {
-
-  //       });
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => ChatPage(
-  //                 name: data["Name"],
-  //                 profileurl: data["Photo"],
-  //                 username: data["username"]),
-  //           ));
-  //     },
-  //     child: Container(
-  //       margin: const EdgeInsets.symmetric(vertical: 8),
-  //       child: Material(
-  //         elevation: 5.0,
-  //         borderRadius: BorderRadius.circular(10),
-  //         child: Container(
-  //           padding: const EdgeInsets.all(18),
-  //           decoration: BoxDecoration(
-  //               color: Colors.green, borderRadius: BorderRadius.circular(10)),
-  //           child: Row(children: [
-  //             // titleAlignment: ListTileTitleAlignment.top,
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Text(
-  //                   data["Name"],
-  //                   style: const TextStyle(
-  //                       fontWeight: FontWeight.w500,
-  //                       color: Colors.black,
-  //                       fontSize: 20),
-  //                 ),
-  //                 SizedBox(height: 10),
-  //                 Text(
-  //                   data["username"],
-  //                   style: const TextStyle(
-  //                       fontWeight: FontWeight.w500,
-  //                       color: Colors.black45,
-  //                       fontSize: 16),
-  //                 ),
-  //                 ClipRRect(
-  //                   borderRadius: BorderRadius.circular(40),
-  //                   child: Image.network(
-  //                     data["Photo"],
-  //                     height: 60,
-  //                     width: 60,
-  //                     fit: BoxFit.cover,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ]),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
+//       });
+//       Navigator.push(
+//           context,
+//           MaterialPageRoute(
+//             builder: (context) => ChatPage(
+//                 name: data["Name"],
+//                 profileurl: data["Photo"],
+//                 username: data["username"]),
+//           ));
+//     },
+//     child: Container(
+//       margin: const EdgeInsets.symmetric(vertical: 8),
+//       child: Material(
+//         elevation: 5.0,
+//         borderRadius: BorderRadius.circular(10),
+//         child: Container(
+//           padding: const EdgeInsets.all(18),
+//           decoration: BoxDecoration(
+//               color: Colors.green, borderRadius: BorderRadius.circular(10)),
+//           child: Row(children: [
+//             // titleAlignment: ListTileTitleAlignment.top,
+//             Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Text(
+//                   data["Name"],
+//                   style: const TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: Colors.black,
+//                       fontSize: 20),
+//                 ),
+//                 SizedBox(height: 10),
+//                 Text(
+//                   data["username"],
+//                   style: const TextStyle(
+//                       fontWeight: FontWeight.w500,
+//                       color: Colors.black45,
+//                       fontSize: 16),
+//                 ),
+//                 ClipRRect(
+//                   borderRadius: BorderRadius.circular(40),
+//                   child: Image.network(
+//                     data["Photo"],
+//                     height: 60,
+//                     width: 60,
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ]),
+//         ),
+//       ),
+//     ),
+//   );
+// }

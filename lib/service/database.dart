@@ -1,3 +1,4 @@
+import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods {
@@ -97,5 +98,14 @@ class DatabaseMethods {
         .collection("users")
         .where("username", isEqualTo: username)
         .get();
+  }
+
+  Future<Stream<QuerySnapshot>> getChatRooms() async {
+    String? myUsername = await SharedPrefHelper().getUserName();
+    return  FirebaseFirestore.instance
+        .collection("chatrooms")
+        .orderBy("time", descending: true)
+        .where("users", arrayContains: myUsername!.toUpperCase())
+        .snapshots();
   }
 }

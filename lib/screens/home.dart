@@ -155,12 +155,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     search = false;
                                     setState(() {});
                                   },
-                                  child: Icon(
+                                  child:const Icon(
                                     Icons.cancel,
                                     color: Color(0xffc199cd),
                                   ),
                                 )
-                              : Icon(Icons.search)),
+                              : Icon(Icons.search) ),
                     )
                   ],
                 ),
@@ -187,79 +187,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           return buildResultCard(element);
                         }).toList(),
                       )
-                    : Column(
-                        children:[
-                          ListTile(
-                            titleAlignment: ListTileTitleAlignment.top,
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.asset(
-                                "assets/profile.jpeg",
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            title: const Text(
-                              "Ajay Kumar",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                  fontSize: 20),
-                            ),
-                            subtitle: const Text(
-                              "Hello, what are you doing?",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black45,
-                                  fontSize: 16),
-                            ),
-                            trailing: const Text(
-                              "4:30 pm",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black45,
-                                  fontSize: 16),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          ListTile(
-                            titleAlignment: ListTileTitleAlignment.top,
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(40),
-                              child: Image.asset(
-                                "assets/aj2.jpg",
-                                height: 60,
-                                width: 60,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            title: const Text(
-                              "AK Yadav",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                  fontSize: 20),
-                            ),
-                            subtitle: const Text(
-                              "Hello, what are you doing?",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black45,
-                                  fontSize: 16),
-                            ),
-                            trailing: const Text(
-                              "4:00 pm",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black45,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
-              )
-            ],
+                    : ChatRoomList(),
+            )  ],
           ),
         ),
       ),
@@ -367,7 +296,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
     QuerySnapshot querySnapshot =
         await DatabaseMethods().getUserInfo(username.toLowerCase());
-    name = "${querySnapshot.docs[0]["NAme"]}";
+    name = "${querySnapshot.docs[0]["Name"]}";
     profilePicUrl = "${querySnapshot.docs[0]["Photo"]}";
     id = "${querySnapshot.docs[0]["Id"]}";
     setState(() {});

@@ -48,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await SharedPrefHelper().saveUserPic(
             "https://cdn2.psychologytoday.com/assets/styles/manual_crop_1_1_1200x1200/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=1-9sfjwH");
         await SharedPrefHelper()
-            .saveUserName(mailcontroller.text.replaceAll("@gmail.com", ""));
+            .saveUserName(mailcontroller.text.replaceAll("@gmail.com", "").toUpperCase());
 
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(

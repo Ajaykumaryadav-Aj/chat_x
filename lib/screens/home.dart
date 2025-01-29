@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: snapshot.data.docs.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  DocumentSnapshot ds = snapshot.data.doc.length;
+                  DocumentSnapshot ds = snapshot.data.docs[index];
                   return ChatRoomListTile(
                       lastMessage: ds["lastMessage"],
                       chatRoomId: ds.id,
@@ -155,12 +155,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                     search = false;
                                     setState(() {});
                                   },
-                                  child:const Icon(
+                                  child: const Icon(
                                     Icons.cancel,
                                     color: Color(0xffc199cd),
                                   ),
                                 )
-                              : Icon(Icons.search) ),
+                              : Icon(Icons.search)),
                     )
                   ],
                 ),
@@ -188,7 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         }).toList(),
                       )
                     : ChatRoomList(),
-            )  ],
+              )
+            ],
           ),
         ),
       ),
@@ -302,6 +303,33 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     setState(() {});
   }
 
+
+
+
+
+
+// getthisUserInfo() async {
+//   username = widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
+
+//   QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username.toLowerCase());
+
+//   // ✅ Check if any document exists before accessing index 0
+//   if (querySnapshot.docs.isNotEmpty) {
+//     name = querySnapshot.docs[0]["Name"];
+//     profilePicUrl = querySnapshot.docs[0]["Photo"];
+//     id = querySnapshot.docs[0]["Id"];
+//   } else {
+//     print("⚠️ No user found for username: $username");
+//     name = "Unknown User";  // Fallback value
+//     // profilePicUrl = "https://via.placeholder.com/60";  // Default profile picture
+//     id = "";
+//   }
+
+//   setState(() {});
+// }
+
+  
+
   @override
   void initState() {
     super.initState();
@@ -314,17 +342,17 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: ListTile(
         titleAlignment: ListTileTitleAlignment.top,
-        leading:
-            profilePicUrl == ""?CircularProgressIndicator()
-            :ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Image.network(
-            profilePicUrl,
-            height: 60,
-            width: 60,
-            fit: BoxFit.cover,
-          ),
-        ),
+        leading: profilePicUrl == ""
+            ? CircularProgressIndicator()
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Image.network(
+                  profilePicUrl,
+                  height: 60,
+                  width: 60,
+                  fit: BoxFit.cover,
+                ),
+              ),
         title: Text(
           username,
           style: TextStyle(

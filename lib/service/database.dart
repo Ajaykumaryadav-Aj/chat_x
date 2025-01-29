@@ -100,6 +100,8 @@ class DatabaseMethods {
         .get();
   }
 
+
+
   Future<Stream<QuerySnapshot>> getChatRooms() async {
     String? myUsername = await SharedPrefHelper().getUserName();
     return  FirebaseFirestore.instance

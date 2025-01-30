@@ -106,8 +106,8 @@ class DatabaseMethods {
     String? myUsername = await SharedPrefHelper().getUserName();
     return  FirebaseFirestore.instance
         .collection("chatrooms")
-        .orderBy("time", descending: true)
         .where("users", arrayContains: myUsername!)
+        .orderBy("time", descending: true)
         .snapshots();
   }
 }

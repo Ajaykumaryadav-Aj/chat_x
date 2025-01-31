@@ -48,15 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       time: ds["lastMessageSendTs"]);
                 },
               )
-            :const Center(
+            : const Center(
                 child: CircularProgressIndicator(),
               );
       },
     );
   }
-
-
-
 
   @override
   void initState() {
@@ -306,32 +303,8 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     setState(() {});
   }
 
+   
 
-
-
-
-
-// getthisUserInfo() async {
-//   username = widget.chatRoomId.replaceAll("_", "").replaceAll(widget.myUsername, "");
-
-//   QuerySnapshot querySnapshot = await DatabaseMethods().getUserInfo(username.toLowerCase());
-
-//   // ✅ Check if any document exists before accessing index 0
-//   if (querySnapshot.docs.isNotEmpty) {
-//     name = querySnapshot.docs[0]["Name"];
-//     profilePicUrl = querySnapshot.docs[0]["Photo"];
-//     id = querySnapshot.docs[0]["Id"];
-//   } else {
-//     print("⚠️ No user found for username: $username");
-//     name = "Unknown User";  // Fallback value
-//     // profilePicUrl = "https://via.placeholder.com/60";  // Default profile picture
-//     id = "";
-//   }
-
-//   setState(() {});
-// }
-
-  
 
   @override
   void initState() {
@@ -344,6 +317,14 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: ListTile(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                    name: name, profileurl: "Photo", username: username),
+              ));
+        },
         titleAlignment: ListTileTitleAlignment.top,
         leading: profilePicUrl == ""
             ? Icon(Icons.person)
@@ -375,4 +356,3 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     );
   }
 }
-

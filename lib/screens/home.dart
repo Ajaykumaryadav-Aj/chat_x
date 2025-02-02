@@ -42,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   return ChatRoomListTile(
-                      lastMessage: ds["lastMessage"],
                       chatRoomId: ds.id,
+                      lastMessage: ds["lastMessage"],
                       myUsername: myUserName!,
                       time: ds["lastMessageSendTs"]);
                 },
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var queryResultSet = [];
   var tempSearchStore = [];
 
-  initiateSearch(value) {
+  initiateSearch(value) {  
     if (value.length == 0) {
       setState(() {
         queryResultSet = [];
@@ -166,29 +166,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
-                width: MediaQuery.of(context).size.width,
-                height: search
-                    ? MediaQuery.of(context).size.height / 1.134
-                    : MediaQuery.of(context).size.height / 1.134,
-                decoration: BoxDecoration(
-                    color: const Color.fromARGB(89, 255, 255, 255),
-                    borderRadius: BorderRadius.circular(20)),
-                child: search
-                    ? ListView(
-                        padding: const EdgeInsets.only(
-                          left: 10.0,
-                          right: 10,
-                        ),
-                        primary: false,
-                        shrinkWrap: true,
-                        children: tempSearchStore.map((element) {
-                          return buildResultCard(element);
-                        }).toList(),
-                      )
-                    : ChatRoomList(),
-              )
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 2),
+                  width: MediaQuery.of(context).size.width,
+                  height: search
+                      ? MediaQuery.of(context).size.height / 1.134
+                      : MediaQuery.of(context).size.height / 1.134,
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(89, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: search
+                      ? ListView(
+                          padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                          primary: false,
+                          shrinkWrap: true,
+                          children: tempSearchStore.map((element) {
+                            return buildResultCard(element);
+                          }).toList(),
+                        )
+                      : ChatRoomList())
             ],
           ),
         ),
@@ -303,9 +299,6 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     setState(() {});
   }
 
-   
-
-
   @override
   void initState() {
     super.initState();
@@ -322,21 +315,23 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
               context,
               MaterialPageRoute(
                 builder: (context) => ChatPage(
-                    name: name, profileurl: "Photo", username: username),
+                    name: name, profileurl: profilePicUrl, username: username),
               ));
         },
         titleAlignment: ListTileTitleAlignment.top,
-        leading: profilePicUrl == ""
-            ? Icon(Icons.person)
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: Image.network(
-                  profilePicUrl,
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
+        leading: SizedBox(width: 60,
+          child: profilePicUrl == ""
+              ? Icon(Icons.person)
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(40),
+                  child: Image.network(
+                    profilePicUrl,
+                    height: 60,
+                    width: 60,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
+        ),
         title: Text(
           username,
           style: TextStyle(

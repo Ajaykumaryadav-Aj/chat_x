@@ -37,10 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
         return snapshot.hasData
             ? ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: snapshot.data.docs.length,
+                itemCount: snapshot.data!.docs.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  DocumentSnapshot ds = snapshot.data.docs[index];
+                  DocumentSnapshot ds = snapshot.data!.docs[index];
                   return ChatRoomListTile(
                       chatRoomId: ds.id,
                       lastMessage: ds["lastMessage"],
@@ -54,6 +54,12 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+
+
+
+
+
+  
 
   @override
   void initState() {

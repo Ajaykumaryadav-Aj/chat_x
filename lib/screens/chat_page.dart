@@ -146,6 +146,59 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+
+
+
+// addMessage(bool sendClicked) async {
+//   if (messageController.text != "") {
+//     String message = messageController.text;
+//     messageController.text = "";
+
+//     DateTime now = DateTime.now();
+//     String formattedDate = DateFormat("h:mma").format(now);
+
+//     // Message information to store
+//     Map<String, dynamic> messageInfoMap = {
+//       "message": message,
+//       "sendBy": myUserName,
+//       "ts": formattedDate,
+//       "time": FieldValue.serverTimestamp(),
+//       "imgUrl": myProfilePic,
+//     };
+
+//     messageId ??= randomAlphaNumeric(10);
+
+//     // Add message to the chatroom collection
+//     DatabaseMethods()
+//         .addMessage(chatRoomId!, messageId!, messageInfoMap)
+//         .then((value) {
+//           Map<String, dynamic> lastMessageInfoMap = {
+//             "lastMessage": message,
+//             "lastMessageSendTs": formattedDate,
+//             "time": FieldValue.serverTimestamp(),
+//             "lastMessageSendBy": myUserName,
+//           };
+          
+//           // Update the last message information in the chatroom for both users
+//           DatabaseMethods()
+//               .updateLastMessageSend(chatRoomId!, lastMessageInfoMap);
+
+//           // After message is sent, update the chatroom list for both users
+//           String otherUser = widget.username;
+
+//           DatabaseMethods().updateChatListForUser(myUserName!, chatRoomId!, lastMessageInfoMap);
+//           DatabaseMethods().updateChatListForUser(otherUser, chatRoomId!, lastMessageInfoMap);
+
+//           if (sendClicked) {
+//             messageId = null;
+//           }
+//       });
+//   }
+// }
+
+
+
+
   getAndSetMessage() async {
     messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
     setState(() {});

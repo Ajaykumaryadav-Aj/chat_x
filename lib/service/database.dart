@@ -39,6 +39,10 @@ class DatabaseMethods {
   //   }
   // }
 
+
+
+
+
   Future<bool> createChatRoom(
       String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
     try {
@@ -66,6 +70,8 @@ class DatabaseMethods {
     }
   }
 
+
+
   Future addMessage(String chatRoomId, String messageId,
       Map<String, dynamic> messageInfoMap) async {
     return FirebaseFirestore.instance
@@ -75,6 +81,14 @@ class DatabaseMethods {
         .doc(messageId)
         .set(messageInfoMap);
   }
+
+
+
+
+
+
+
+
 
   updateLastMessageSend(
       String chatRoomId, Map<String, dynamic> lastMessageInfoMap) {
@@ -106,8 +120,26 @@ class DatabaseMethods {
     String? myUsername = await SharedPrefHelper().getUserName();
     return  FirebaseFirestore.instance
         .collection("chatrooms")
-        .where("users", arrayContains: myUsername!)
+        .where("users", arrayContains: myUsername)
         .orderBy("time", descending: true)
         .snapshots();
   }
+
+
+
+
+  
+// Future updateChatListForUser(String username, String chatRoomId, Map<String, dynamic> lastMessageInfoMap) async {
+//   try {
+//     await FirebaseFirestore.instance
+//         .collection("users")
+//         .doc(username)
+//         .collection("chatrooms")
+//         .doc(chatRoomId)
+//         .set(lastMessageInfoMap);
+//   } catch (e) {
+//     print("Error updating chat list for user: $e");
+//   }
+// }
+
 }

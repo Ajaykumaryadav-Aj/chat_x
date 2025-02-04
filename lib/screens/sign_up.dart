@@ -84,8 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      // height: MediaQuery.of(context).size.height * 5,
-      height: 500,
+      height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -106,7 +105,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 85.0),
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.1),
                   child: Column(
                     children: [
                       const Center(
@@ -128,17 +128,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 20.0),
+                        margin: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height *
+                                0.02, // Adjust vertical margin dynamically
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.05),
                         child: Material(
                           elevation: 5.0,
                           borderRadius: BorderRadius.circular(10),
                           child: SingleChildScrollView(
                             child: Container(
-                              padding: const EdgeInsets.only(top: 30),
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 15.0),
-                              height: MediaQuery.of(context).size.height / 1.71,
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).size.height *
+                                      0.03),
+                              margin: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height * 0.02,
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.04),
+                              height: MediaQuery.of(context).size.height / 1.5,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                 color: Colors.white,

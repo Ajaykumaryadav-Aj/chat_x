@@ -1,8 +1,5 @@
-import 'package:chat_x/screens/home.dart';
-import 'package:chat_x/screens/sign_up.dart';
 import 'package:chat_x/screens/signin.dart';
-import 'package:chat_x/service/shared_pref.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

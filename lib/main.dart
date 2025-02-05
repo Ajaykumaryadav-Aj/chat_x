@@ -1,3 +1,4 @@
+import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/screens/signin.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SigninScreen(),
+      home: const HomeScreen(),
     );
   }
 }

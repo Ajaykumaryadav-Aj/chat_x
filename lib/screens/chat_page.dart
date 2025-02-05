@@ -60,7 +60,7 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Flexible(
           child: Container(
-            padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -146,59 +146,6 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-
-
-
-// addMessage(bool sendClicked) async {
-//   if (messageController.text != "") {
-//     String message = messageController.text;
-//     messageController.text = "";
-
-//     DateTime now = DateTime.now();
-//     String formattedDate = DateFormat("h:mma").format(now);
-
-//     // Message information to store
-//     Map<String, dynamic> messageInfoMap = {
-//       "message": message,
-//       "sendBy": myUserName,
-//       "ts": formattedDate,
-//       "time": FieldValue.serverTimestamp(),
-//       "imgUrl": myProfilePic,
-//     };
-
-//     messageId ??= randomAlphaNumeric(10);
-
-//     // Add message to the chatroom collection
-//     DatabaseMethods()
-//         .addMessage(chatRoomId!, messageId!, messageInfoMap)
-//         .then((value) {
-//           Map<String, dynamic> lastMessageInfoMap = {
-//             "lastMessage": message,
-//             "lastMessageSendTs": formattedDate,
-//             "time": FieldValue.serverTimestamp(),
-//             "lastMessageSendBy": myUserName,
-//           };
-          
-//           // Update the last message information in the chatroom for both users
-//           DatabaseMethods()
-//               .updateLastMessageSend(chatRoomId!, lastMessageInfoMap);
-
-//           // After message is sent, update the chatroom list for both users
-//           String otherUser = widget.username;
-
-//           DatabaseMethods().updateChatListForUser(myUserName!, chatRoomId!, lastMessageInfoMap);
-//           DatabaseMethods().updateChatListForUser(otherUser, chatRoomId!, lastMessageInfoMap);
-
-//           if (sendClicked) {
-//             messageId = null;
-//           }
-//       });
-//   }
-// }
-
-
-
-
   getAndSetMessage() async {
     messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
     setState(() {});
@@ -207,50 +154,56 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.name,
+            style: TextStyle(color: Colors.amber),
+          ),
+        ),
         backgroundColor: const Color(0xFF553370),
         body: Container(
-          padding: const EdgeInsets.only(top: 50),
+          padding: const EdgeInsets.only(top: 0),
           child: Stack(children: [
             Container(
-                margin: const EdgeInsets.only(top: 50),
+                margin: const EdgeInsets.only(top: 0),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height /1.12,
+                height: MediaQuery.of(context).size.height / 1.12,
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
+                        topRight: Radius.circular(10),
                         topLeft: Radius.circular(0),
                         bottomLeft: Radius.circular(30))),
                 child: chatMessage()),
-            Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ));
-                    },
-                    child: const Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: Color(0xffc199cd),
-                    ),
-                  ),
-                  const SizedBox(width: 100),
-                  Text(
-                    widget.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Color(0xffc199cd),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 60),
+            //   child: Row(
+            //     children: [
+            //       GestureDetector(
+            //         onTap: () {
+            //           Navigator.pushReplacement(
+            //               context,
+            //               MaterialPageRoute(
+            //                 builder: (context) => const HomeScreen(),
+            //               ));
+            //         },
+            //         child: const Icon(
+            //           Icons.arrow_back_ios_new_outlined,
+            //           color: Color(0xffc199cd),
+            //         ),
+            //       ),
+            //       const SizedBox(width: 100),
+            //       Text(
+            //         widget.name,
+            //         style: const TextStyle(
+            //           fontWeight: FontWeight.bold,
+            //           fontSize: 20,
+            //           color: Color(0xffc199cd),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 20),
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),

@@ -299,13 +299,6 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
     setState(() {});
   }
 
-
-
-
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -315,6 +308,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 45,
       margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       child: ListTile(
         onTap: () {
@@ -337,8 +331,8 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                   borderRadius: BorderRadius.circular(40),
                   child: Image.network(
                     profilePicUrl,
-                    height: 60,
-                    width: 60,
+                    height: 50,
+                    width: 50,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -349,6 +343,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
               fontWeight: FontWeight.w500, color: Colors.black, fontSize: 15),
         ),
         subtitle: Text(
+          overflow: TextOverflow.ellipsis,
           widget.lastMessage,
           style: TextStyle(
               fontWeight: FontWeight.w500, color: Colors.black45, fontSize: 16),
@@ -356,7 +351,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         trailing: Text(
           widget.time,
           style: TextStyle(
-              fontWeight: FontWeight.w500, color: Colors.black45, fontSize: 16),
+              fontWeight: FontWeight.w500, color: Colors.black45, fontSize: 13),
         ),
       ),
     );

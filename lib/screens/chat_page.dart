@@ -64,13 +64,13 @@ class _ChatPageState extends State<ChatPage> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(0),
+                  topLeft: const Radius.circular(18),
                   bottomRight: sendByMe
                       ? const Radius.circular(0)
-                      : const Radius.circular(24),
-                  topRight: const Radius.circular(24),
+                      : const Radius.circular(18),
+                  topRight: const Radius.circular(18),
                   bottomLeft: sendByMe
-                      ? const Radius.circular(24)
+                      ? const Radius.circular(18)
                       : const Radius.circular(0),
                 ),
                 color: sendByMe
@@ -155,12 +155,26 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xFF553370),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ));
+            },
+          ),
+          centerTitle: true,
           title: Text(
             widget.name,
             style: TextStyle(color: Colors.amber),
           ),
         ),
-        backgroundColor: const Color(0xFF553370),
         body: Container(
           padding: const EdgeInsets.only(top: 0),
           child: Stack(children: [

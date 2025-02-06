@@ -51,7 +51,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await SharedPrefHelper().saveUserName(
             mailcontroller.text.replaceAll("@gmail.com", "").toUpperCase());
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
           "Registered Successfully",
           style: TextStyle(fontSize: 20),
@@ -59,17 +59,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => const HomeScreen(),
             ));
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
             "Password provided is too weak",
             style: TextStyle(fontSize: 18),
           )));
         } else if (e.code == 'email-already-in-use') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.orangeAccent,
               content: Text(
                 "Account Already exists",
@@ -179,7 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           }
                                           return null;
                                         },
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                             border: InputBorder.none,
                                             prefixIcon: Icon(
                                               Icons.person,
@@ -248,7 +248,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               }
                                               return null;
                                             },
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 border: InputBorder.none,
                                                 prefixIcon: Icon(
                                                   Icons.password,
@@ -282,7 +282,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               }
                                               return null;
                                             },
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                                 border: InputBorder.none,
                                                 prefixIcon: Icon(
                                                   Icons.password_rounded,
@@ -295,7 +295,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
+                                            const Text(
                                               "Don't have an account? ",
                                               style: TextStyle(
                                                 fontSize: 15,
@@ -307,7 +307,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          SigninScreen(),
+                                                          const SigninScreen(),
                                                     ));
                                               },
                                               child: const Text(
@@ -336,7 +336,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             GestureDetector(
               onTap: () {
                 if (_formkey.currentState!.validate()) {

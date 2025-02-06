@@ -1,5 +1,7 @@
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/screens/signin.dart';
+import 'package:chat_x/service/auth.dart';
+import 'package:chat_x/service/shared_pref.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +14,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+ const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +25,16 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: FutureBuilder(
+        future: AuthMethods().getcurrentUser(),
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          } else {
+            return const SigninScreen();
+          }
+        },
+      ),
     );
   }
 }

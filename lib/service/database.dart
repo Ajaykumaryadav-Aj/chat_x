@@ -23,22 +23,6 @@ class DatabaseMethods {
         .get();
   }
 
-  // createChatRoom(
-  //     String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
-  //   final snapshot = await FirebaseFirestore.instance
-  //       .collection("chatrooms")
-  //       .doc(chatRoomId)
-  //       .get();
-  //   if (snapshot.exists) {
-  //     return true;
-  //   } else {
-  //     return FirebaseFirestore.instance
-  //         .collection("chatrooms")
-  //         .doc(chatRoomId)
-  //         .set(chatRoomInfoMap);
-  //   }
-  // }
-
   Future<bool> createChatRoom(
       String chatRoomId, Map<String, dynamic> chatRoomInfoMap) async {
     try {
@@ -108,6 +92,4 @@ class DatabaseMethods {
         .orderBy("time", descending: true)
         .snapshots();
   }
-
-  
 }

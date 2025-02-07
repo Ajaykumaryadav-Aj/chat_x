@@ -132,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18),
                           ))
-                        : const Text(
-                            "ChatUp",
+                        :  Text(
+                            myName.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,

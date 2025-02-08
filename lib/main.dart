@@ -1,6 +1,7 @@
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/screens/signin.dart';
 import 'package:chat_x/service/auth.dart';
+import 'package:chat_x/widgets/chatroomlist.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      // home:  UploadImageScreen(),
       home: FutureBuilder(
         future: AuthMethods().getcurrentUser(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {

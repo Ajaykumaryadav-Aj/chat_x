@@ -1,6 +1,5 @@
 import 'package:chat_x/screens/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -19,14 +18,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   resetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
         "Password Reset Email has been sent",
         style: TextStyle(fontSize: 18.8),
       )));
     } on FirebaseException catch (e) {
       if (e.code == "user-not-found") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
           "No User found for that email",
           style: TextStyle(fontSize: 18.0),

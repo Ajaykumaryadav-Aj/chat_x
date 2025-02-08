@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({super.key,});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   String email = "", password = "", name = "", confirmPassword = "";
   final _formkey = GlobalKey<FormState>();
 

@@ -7,14 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key,});
+  const SignUpScreen({
+    super.key,
+  });
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   String email = "", password = "", name = "", confirmPassword = "";
   final _formkey = GlobalKey<FormState>();
 
@@ -161,63 +162,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     const Text(
                                       "Name",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
-                                    Container(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(width: 1),
-                                      ),
-                                      child: TextFormField(
-                                        controller: nameController,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "Please enter your name";
-                                          }
-                                          return null;
-                                        },
-                                        decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              Icons.person,
-                                              color: Color(0xFF7f30fe),
-                                            )),
-                                      ),
+                                    TextFormField(
+                                      controller: nameController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Please enter your name";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              top: 20, left: 20),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.person,
+                                            color: Color(0xFF7f30fe),
+                                          )),
                                     ),
                                     const SizedBox(height: 10),
                                     const Text(
                                       "Email",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
-                                    Container(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(width: 1),
-                                      ),
-                                      child: TextFormField(
-                                        controller: mailcontroller,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "Please enter your Email";
-                                          }
-                                          return null;
-                                        },
-                                        decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              Icons.email,
-                                              color: Color(0xFF7f30fe),
-                                            )),
-                                      ),
+                                    TextFormField(
+                                      controller: mailcontroller,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Please enter your Email";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              top: 20, left: 20),
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12)),
+                                          prefixIcon: Icon(
+                                            Icons.email,
+                                            color: Color(0xFF7f30fe),
+                                          )),
                                     ),
                                     const SizedBox(height: 20),
                                     Column(
@@ -227,69 +223,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         const Text(
                                           "Password",
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                         const SizedBox(height: 8.0),
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(width: 1),
-                                          ),
-                                          child: TextFormField(
-                                            controller: passwordController,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "Please enter your Passwor";
-                                              }
-                                              return null;
-                                            },
-                                            decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                prefixIcon: Icon(
-                                                  Icons.password,
-                                                  color: Color(0xFF7f30fe),
-                                                )),
-                                          ),
+                                        TextFormField(
+                                          controller: passwordController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "Please enter your Passwor";
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.only(
+                                                  top: 20, left: 20),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12)),
+                                              prefixIcon: Icon(
+                                                Icons.password,
+                                                color: Color(0xFF7f30fe),
+                                              )),
                                         ),
                                         const SizedBox(height: 10),
                                         const Text(
                                           "Confirm Password",
                                           style: TextStyle(
-                                            fontSize: 18,
+                                            fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                         const SizedBox(height: 8.0),
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(width: 1),
-                                          ),
-                                          child: TextFormField(
-                                            controller: confirmController,
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "Please enter your confirm password";
-                                              }
-                                              return null;
-                                            },
-                                            decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                prefixIcon: Icon(
-                                                  Icons.password_rounded,
-                                                  color: Color(0xFF7f30fe),
-                                                )),
-                                          ),
+                                        TextFormField(
+                                          controller: confirmController,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return "Please enter your confirm password";
+                                            }
+                                            return null;
+                                          },
+                                          decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.only(
+                                                  top: 20, left: 20),
+                                              border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12)),
+                                              prefixIcon: Icon(
+                                                Icons.password_rounded,
+                                                color: Color(0xFF7f30fe),
+                                              )),
                                         ),
                                         const SizedBox(height: 35),
                                         Row(
@@ -297,9 +285,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             const Text(
-                                              "Don't have an account? ",
+                                              "Already have an account? ",
                                               style: TextStyle(
-                                                fontSize: 15,
+                                                fontSize: 14,
                                               ),
                                             ),
                                             GestureDetector(
@@ -318,7 +306,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     color: Color(
                                                       0xFF7f30fe,
                                                     ),
-                                                    fontSize: 17),
+                                                    fontSize: 15),
                                               ),
                                             )
                                           ],

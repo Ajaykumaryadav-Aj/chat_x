@@ -151,6 +151,8 @@ class _SigninScreenState extends State<SigninScreen> {
                                     return null;
                                   },
                                   decoration: InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.only(top: 20, left: 20),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -180,6 +182,8 @@ class _SigninScreenState extends State<SigninScreen> {
                                         return null;
                                       },
                                       decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                              top: 20, left: 20),
                                           border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(15)),
@@ -210,7 +214,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 40),
+                                const SizedBox(height: 24),
                                 GestureDetector(
                                   onTap: () {
                                     if (_formkey.currentState!.validate()) {

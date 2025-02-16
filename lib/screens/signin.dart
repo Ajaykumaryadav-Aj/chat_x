@@ -142,27 +142,22 @@ class _SigninScreenState extends State<SigninScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 8.0),
-                                Container(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(width: 1),
-                                  ),
-                                  child: TextFormField(
-                                    controller: usermailController,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "Please Enter Your Email";
-                                      }
-                                      return null;
-                                    },
-                                    decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        prefixIcon: Icon(
-                                          Icons.email,
-                                          color: Color(0xFF7f30fe),
-                                        )),
-                                  ),
+                                TextFormField(
+                                  controller: usermailController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Please Enter Your Email";
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      prefixIcon: Icon(
+                                        Icons.email,
+                                        color: Color(0xFF7f30fe),
+                                      )),
                                 ),
                                 const SizedBox(height: 20),
                                 Column(
@@ -176,27 +171,22 @@ class _SigninScreenState extends State<SigninScreen> {
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
-                                    Container(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(width: 1),
-                                      ),
-                                      child: TextFormField(
-                                        controller: userPasswordController,
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "Please Enter Your Password";
-                                          }
-                                          return null;
-                                        },
-                                        decoration: const InputDecoration(
-                                            border: InputBorder.none,
-                                            prefixIcon: Icon(
-                                              Icons.password,
-                                              color: Color(0xFF7f30fe),
-                                            )),
-                                      ),
+                                    TextFormField(
+                                      controller: userPasswordController,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Please Enter Your Password";
+                                        }
+                                        return null;
+                                      },
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          prefixIcon: Icon(
+                                            Icons.password,
+                                            color: Color(0xFF7f30fe),
+                                          )),
                                     )
                                   ],
                                 ),

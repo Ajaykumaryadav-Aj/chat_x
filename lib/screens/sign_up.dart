@@ -279,38 +279,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 color: Color(0xFF7f30fe),
                                               )),
                                         ),
-                                        const SizedBox(height: 35),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              "Already have an account? ",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const SigninScreen(),
-                                                    ));
-                                              },
-                                              child: const Text(
-                                                "Sign In Now",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Color(
-                                                      0xFF7f30fe,
-                                                    ),
-                                                    fontSize: 15),
-                                              ),
-                                            )
-                                          ],
-                                        )
                                       ],
                                     ),
                                   ],
@@ -320,6 +288,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account? ",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SigninScreen(),
+                                  ));
+                            },
+                            child: const Text(
+                              "Sign In Now",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(
+                                    0xFF7f30fe,
+                                  ),
+                                  fontSize: 15),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),

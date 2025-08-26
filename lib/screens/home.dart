@@ -216,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
+                chatRoomId: '',
                 name: data["Name"],
                 profileurl: data["Photo"],
                 username: data["username"],

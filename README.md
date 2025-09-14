@@ -17,6 +17,7 @@ A real-time messaging app built with Flutter and Firebase that allows users to s
 - Real-Time Messaging: Messages are instantly synced across devices using Firebase Firestore.
 - Responsive UI: Designed with Material Design for a seamless user experience on both iOS and Android.
 - Integrated real-time updates to ensure users receive and send messages instantly, even while the app is running in the background.
+- Push Notifications: Firebase Cloud Messaging (FCM) to send push notifications for new messages and updates, keeping users informed even when they are not actively using the app.
 
 A new Flutter project.
 

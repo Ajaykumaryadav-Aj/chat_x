@@ -1,14 +1,23 @@
+import 'package:chat_x/firebase_options.dart';
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/screens/signin.dart';
 import 'package:chat_x/service/auth.dart';
+import 'package:chat_x/service/notification/notification.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_x/service/database.dart';
 import 'package:chat_x/service/shared_pref.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await PushNotificationService().initialize();
+
+  final token = FirebaseMessaging.instance.getToken();
+  print(token);
   runApp(const MyApp());
 }
 
@@ -60,7 +69,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-     home: FutureBuilder(
+      home: FutureBuilder(
         future: AuthMethods().getcurrentUser(),
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
@@ -86,6 +95,105 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class NotificationController {
+//   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+
+//   /// Initialize notifications
+//   static Future<void> initNotifications() async {
+//     // Request permissions (important for iOS)
+//     NotificationSettings settings = await _messaging.requestPermission(
+//       alert: true,
+//       badge: true,
+//       sound: true,
+//     );
+
+//     debugPrint(" Notification permission: ${settings.authorizationStatus}");
+
+//     // Get FCM token for this device
+//     String? token = await _messaging.getToken();
+//     debugPrint(" FCM Token: $token");
+
+//     // Handle foreground notifications
+//     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+//       debugPrint("Foreground message: ${message.notification?.title}");
+//       debugPrint("Body: ${message.notification?.body}");
+//     });
+
+//     // When app is opened from background (tapped notification)
+//     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+//       debugPrint(
+//           "Opened app from notification: ${message.notification?.title}");
+//     });
+
+//     // Handle background notifications
+//     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+//   }
+
+//   /// Background handler
+//   static Future<void> _firebaseMessagingBackgroundHandler(
+//       RemoteMessage message) async {
+//     debugPrint(" Background message: ${message.messageId}");
+//   }
+// }
 
 
 

@@ -1,6 +1,4 @@
 
-
-
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/service/database.dart';
 import 'package:chat_x/service/shared_pref.dart';

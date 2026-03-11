@@ -1,6 +1,7 @@
 
 import 'package:chat_x/screens/chat_page.dart';
 import 'package:chat_x/service/database.dart';
+import 'package:chat_x/service/notification/notification.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class ChatRoomListTile extends StatefulWidget {
 
 class _ChatRoomListTileState extends State<ChatRoomListTile> {
   String profilePicUrl = "", name = "", username = "", userId = "";
+   PushNotificationService push = PushNotificationService();
 
   getThisUserInfo() async {
     username =
@@ -34,8 +36,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
       setState(() {});
     }
   }
-
-  @override
+    @override
   void initState() {
     super.initState();
     getThisUserInfo();
@@ -52,6 +53,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
               context,
               MaterialPageRoute(
                 builder: (context) => ChatPage(
+                  userId: userId,
                     name: name,
                     profileurl: profilePicUrl,
                     username: username,

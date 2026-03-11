@@ -7,7 +7,7 @@ class DatabaseMethods {
         .collection("users")
         .doc(id)
         .set({
-      "isOnline": false, // ✅ default values to prevent errors
+      "isOnline": false,
       "lastSeen": FieldValue.serverTimestamp(),
       ...userInfo,
     });
@@ -93,7 +93,6 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  /// ✅ Update user online/offline + lastSeen
   Future<void> updateUserStatus(String userId, bool isOnline) async {
     await FirebaseFirestore.instance.collection("users").doc(userId).set({
       "isOnline": isOnline,

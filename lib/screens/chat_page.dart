@@ -1,17 +1,19 @@
-
 import 'package:chat_x/screens/home.dart';
 import 'package:chat_x/service/database.dart';
+import 'package:chat_x/service/notification/notification.dart';
 import 'package:chat_x/service/shared_pref.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
-  final String name, profileurl, username, chatRoomId;
+  final String name, profileurl, username, chatRoomId, userId;
   const ChatPage({
     super.key,
     required this.name,
+    required this.userId,
     required this.profileurl,
     required this.username,
     required this.chatRoomId,
@@ -30,6 +32,100 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     loadUserData();
+  }
+
+  Future<void> sendMessage(String receiverId, String messageText) async {
+    final sender = FirebaseAuth.instance.currentUser;
+    if (sender == null) return;
+
+    // Save to Firestore
+    await FirebaseFirestore.instance
+        .collection("chats")
+        .doc(getChatId(sender.uid, receiverId))
+        .collection("messages")
+        .add({
+      "senderId": sender.uid,
+      "receiverId": receiverId,
+      "text": messageText,
+      "createdAt": FieldValue.serverTimestamp(),
+    });
+
+
+
+     Future<void> sendMessage() async {
+    if (messageController.text.trim().isEmpty) return;
+
+    final sender = FirebaseAuth.instance.currentUser;
+    if (sender == null) return;
+
+    String messageText = messageController.text.trim();
+    messageController.clear();
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat("h:mma").format(now);
+
+    // Save to Firestore
+    await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(widget.chatRoomId)
+        .collection("chats")
+        .add({
+      "message": messageText,
+      "sendBy": sender.uid,
+      "receiverId": widget.userId,
+      "ts": formattedDate,
+      "time": FieldValue.serverTimestamp(),
+      "status": "sent",
+    });
+
+    // Update last message
+    await FirebaseFirestore.instance
+        .collection("chatrooms")
+        .doc(widget.chatRoomId)
+        .set({
+      "lastMessage": messageText,
+      "lastMessageSendBy": sender.uid,
+      "lastMessageSendTs": FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    // ------------------ Get Receiver FCM Token ------------------
+    final receiverDoc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.userId) // userId is receiver
+        .get();
+
+    final receiverToken = receiverDoc.data()?["fcmToken"];
+
+    // ------------------ Call Backend API ------------------
+    if (receiverToken != null) {
+      await PushNotificationService.sendNotification(
+        token: receiverToken,
+        title: "New message from ${sender.email}",
+        body: messageText,
+      );
+    }
+  }
+
+
+    // Fetch receiver token
+    final receiverDoc = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(receiverId)
+        .get();
+
+    final receiverToken = receiverDoc.data()?["fcmToken"];
+
+    if (receiverToken != null) {
+      await PushNotificationService.sendNotification(
+        token: receiverToken,
+        title: "New message from ${sender.email}",
+        body: messageText,
+      );
+    }
+  }
+
+  String getChatId(String uid1, String uid2) {
+    return uid1.hashCode <= uid1.hashCode ? "$uid1$uid2" : "$uid2$uid1";
   }
 
   // Load shared preferences
@@ -60,15 +156,19 @@ class _ChatPageState extends State<ChatPage> {
 
   // Tick icons
   Widget tickIcon(String status) {
-    if (status == "sent") return const Icon(Icons.check, size: 16, color: Colors.grey);
-    if (status == "delivered") return const Icon(Icons.done_all, size: 16, color: Colors.grey);
-    if (status == "seen") return const Icon(Icons.done_all, size: 16, color: Colors.blue);
+    if (status == "sent")
+      return const Icon(Icons.check, size: 16, color: Colors.grey);
+    if (status == "delivered")
+      return const Icon(Icons.done_all, size: 16, color: Colors.grey);
+    if (status == "seen")
+      return const Icon(Icons.done_all, size: 16, color: Colors.blue);
     return const SizedBox.shrink();
   }
 
   Widget chatMessageTile(String message, bool sendByMe, String status) {
     return Row(
-      mainAxisAlignment: sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment:
+          sendByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Flexible(
           child: Container(
@@ -77,11 +177,17 @@ class _ChatPageState extends State<ChatPage> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(18),
-                bottomRight: sendByMe ? const Radius.circular(0) : const Radius.circular(18),
+                bottomRight: sendByMe
+                    ? const Radius.circular(0)
+                    : const Radius.circular(18),
                 topRight: const Radius.circular(18),
-                bottomLeft: sendByMe ? const Radius.circular(18) : const Radius.circular(0),
+                bottomLeft: sendByMe
+                    ? const Radius.circular(18)
+                    : const Radius.circular(0),
               ),
-              color: sendByMe ? const Color.fromARGB(255, 194, 197, 204) : const Color.fromARGB(255, 183, 194, 228),
+              color: sendByMe
+                  ? const Color.fromARGB(255, 194, 197, 204)
+                  : const Color.fromARGB(255, 183, 194, 228),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -89,7 +195,10 @@ class _ChatPageState extends State<ChatPage> {
                 Flexible(
                   child: Text(
                     message,
-                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.black),
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                 ),
                 if (sendByMe) ...[const SizedBox(width: 5), tickIcon(status)],
@@ -102,7 +211,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget chatMessageList() {
-    if (messageStream == null) return const Center(child: CircularProgressIndicator());
+    if (messageStream == null)
+      return const Center(child: CircularProgressIndicator());
 
     return StreamBuilder(
       stream: messageStream,
@@ -138,49 +248,57 @@ class _ChatPageState extends State<ChatPage> {
                   .update({"status": "seen"});
             }
 
-            return chatMessageTile(ds["message"], myUserName == ds["sendBy"], ds["status"]);
+            return chatMessageTile(
+                ds["message"], myUserName == ds["sendBy"], ds["status"]);
           },
         );
       },
     );
   }
 
-  addMessage() {
-    if (messageController.text.trim().isEmpty) return;
-    if (widget.chatRoomId.isEmpty) return;
+addMessage() async {
+  if (messageController.text.trim().isEmpty) return;
+  if (widget.chatRoomId.isEmpty) return;
 
-    String message = messageController.text.trim();
-    messageController.clear();
+  String message = messageController.text.trim(); // save text first
+  messageController.clear();
 
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat("h:mma").format(now);
+  DateTime now = DateTime.now();
+  String formattedDate = DateFormat("h:mma").format(now);
 
-    Map<String, dynamic> messageInfoMap = {
-      "message": message,
-      "sendBy": myUserName,
-      "ts": formattedDate,
-      "time": FieldValue.serverTimestamp(),
-      "imgUrl": myProfilePic,
-      "status": "sent",
-    };
+  Map<String, dynamic> messageInfoMap = {
+    "message": message,
+    "sendBy": myUserName,
+    "ts": formattedDate,
+    "time": FieldValue.serverTimestamp(),
+    "imgUrl": myProfilePic,
+    "status": "sent",
+  };
 
-    messageId ??= randomAlphaNumeric(10);
+  messageId ??= randomAlphaNumeric(10);
 
-    DatabaseMethods().addMessage(widget.chatRoomId, messageId!, messageInfoMap).then((_) {
-      Map<String, dynamic> lastMessageInfoMap = {
-        "lastMessage": message,
-        "lastMessageSendTs": formattedDate,
-        "time": FieldValue.serverTimestamp(),
-        "lastMessageSendBy": myUserName,
-      };
-      DatabaseMethods().updateLastMessageSend(widget.chatRoomId, lastMessageInfoMap);
-      messageId = null;
-    });
-  }
+  await DatabaseMethods().addMessage(widget.chatRoomId, messageId!, messageInfoMap);
+
+  Map<String, dynamic> lastMessageInfoMap = {
+    "lastMessage": message,
+    "lastMessageSendTs": formattedDate,
+    "time": FieldValue.serverTimestamp(),
+    "lastMessageSendBy": myUserName,
+  };
+
+  await DatabaseMethods().updateLastMessageSend(widget.chatRoomId, lastMessageInfoMap);
+  messageId = null;
+
+  // ✅ Now send notification with saved `message`
+  await sendMessage(widget.userId, message);
+}
+
+
 
   getAndSetMessage() async {
     if (widget.chatRoomId.isEmpty) return;
-    messageStream = await DatabaseMethods().getChatRoomMessages(widget.chatRoomId);
+    messageStream =
+        await DatabaseMethods().getChatRoomMessages(widget.chatRoomId);
     setState(() {});
   }
 
@@ -200,14 +318,18 @@ class _ChatPageState extends State<ChatPage> {
         ),
         centerTitle: true,
         title: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance.collection("users").doc(widget.username).snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection("users")
+              .doc(widget.username)
+              .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData || !snapshot.data!.exists) {
               return Row(
                 children: [
                   const Icon(Icons.circle, color: Colors.grey, size: 10),
                   const SizedBox(width: 6),
-                  Text(widget.name, style: const TextStyle(color: Colors.amber)),
+                  Text(widget.name,
+                      style: const TextStyle(color: Colors.amber)),
                 ],
               );
             }
@@ -219,7 +341,8 @@ class _ChatPageState extends State<ChatPage> {
             String lastSeenText = "Last seen just now";
             if (!isOnline && lastSeenTimestamp != null) {
               DateTime lastSeen = lastSeenTimestamp.toDate();
-              lastSeenText = "Last seen: ${DateFormat('hh:mm a').format(lastSeen)}";
+              lastSeenText =
+                  "Last seen: ${DateFormat('hh:mm a').format(lastSeen)}";
             }
 
             return Column(
@@ -227,65 +350,75 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle, color: isOnline ? Colors.green : Colors.grey, size: 10),
+                    Icon(Icons.circle,
+                        color: isOnline ? Colors.green : Colors.grey, size: 10),
                     const SizedBox(width: 6),
-                    Text(widget.name, style: const TextStyle(color: Colors.amber)),
+                    Text(widget.name,
+                        style: const TextStyle(color: Colors.amber)),
                   ],
                 ),
                 Text(
                   isOnline ? "Online" : lastSeenText,
-                  style: const TextStyle(color: Colors.white70, fontSize: 12, fontWeight: FontWeight.w400),
+                  style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400),
                 ),
               ],
             );
           },
         ),
       ),
-      body: Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 0),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.white,
-            child: chatMessageList(),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                        hintText: "Type a message",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 0),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              color: Colors.white,
+              child: chatMessageList(),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: messageController,
+                        decoration: InputDecoration(
+                          hintText: "Type a message",
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Material(
-                    color: const Color(0xFF553370),
-                    borderRadius: BorderRadius.circular(50),
-                    child: InkWell(
-                      onTap: addMessage,
+                    const SizedBox(width: 8),
+                    Material(
+                      color: const Color(0xFF553370),
                       borderRadius: BorderRadius.circular(50),
-                      child: const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: Icon(Icons.send, color: Colors.white),
+                      child: InkWell(
+                        onTap: addMessage,
+                        borderRadius: BorderRadius.circular(50),
+                        child: const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Icon(Icons.send, color: Colors.white),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -333,7 +466,7 @@ class _ChatPageState extends State<ChatPage> {
 
 
 
-
+  
 
 
 

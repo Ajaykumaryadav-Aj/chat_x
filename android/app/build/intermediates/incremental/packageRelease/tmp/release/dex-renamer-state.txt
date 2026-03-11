@@ -1,0 +1,7 @@
+#Wed Mar 11 01:00:30 IST 2026
+base.1=C\:\\Users\\Ajay Kumar\\Desktop\\chat_x\\android\\app\\build\\intermediates\\desugar_lib_dex\\release\\classes1000.dex
+path.1=classes1000.dex
+base.0=C\:\\Users\\Ajay Kumar\\Desktop\\chat_x\\android\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex

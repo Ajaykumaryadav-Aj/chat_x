@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18),
                           ))
-                        :  Text(
+                        : Text(
                             myName.toString(),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -216,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => ChatPage(
+                userId: data['Id'],
                 chatRoomId: '',
                 name: data["Name"],
                 profileurl: data["Photo"],
@@ -273,4 +274,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
